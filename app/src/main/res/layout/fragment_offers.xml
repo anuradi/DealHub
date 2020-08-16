@@ -100,7 +100,7 @@
             android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:src="@drawable/test" />
+            android:src="@drawable/arpico" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/favorite_star" />
+                android:src="@drawable/star_favorite_gray" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add_to_cart"

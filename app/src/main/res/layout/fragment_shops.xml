@@ -23,13 +23,9 @@
 
                 <TextView
                     android:id="@+id/app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/shops"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:fontFamily=""
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                 android:background="@drawable/shops_name"
                     android:layout_alignParentStart="true"/>
 
             </RelativeLayout>
@@ -90,8 +86,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/shop_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/test"
+            android:layout_height="250dp"
+            android:src="@drawable/arpico_shop"
             android:adjustViewBounds="true"
             android:scaleType="fitXY" />
 
