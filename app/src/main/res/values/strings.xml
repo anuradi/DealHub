@@ -3,4 +3,6 @@
     <string name="deal_hub">Deal Hub</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shops">Shops</string>
+    <string name="price_1500_00_discount_20_expiration_date_2020_12_28">Price: 1500.00 <b>|</b> Discount: 20% <b>|</b> Expiration Date: 2020.12.28</string>
 </resources>

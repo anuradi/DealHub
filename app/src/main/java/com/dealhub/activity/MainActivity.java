@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.dealhub.R;
+import com.dealhub.fragment.cart;
 import com.dealhub.fragment.favorite_customer;
 import com.dealhub.fragment.offers_customer;
 import com.dealhub.fragment.profile_customer;
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.nav_profile:
                     selectedFragment = new profile_customer();
+                    break;
+
+
+                case R.id.nav_cart:
+                    selectedFragment = new cart();
                     break;
             }
             if (selectedFragment != null) {
