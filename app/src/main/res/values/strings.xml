@@ -6,4 +6,10 @@
     <string name="shops">Shops</string>
     <string name="price_1500_00_discount_20_expiration_date_2020_12_28">Price: 1500.00 <b>|</b> Discount: 20% <b>|</b> Expiration Date: 2020.12.28</string>
     <string name="edit_your_profile">Edit Your Profile</string>
+    <string name="first_name">First Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="last_name">Last Name</string>
+    <string name="user_name">User Name</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
