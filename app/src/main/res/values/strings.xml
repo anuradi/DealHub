@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">DealHub</string>
     <string name="deal_hub">Deal Hub</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
