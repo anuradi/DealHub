@@ -17,4 +17,13 @@
     <string name="offer_description">Offer Description</string>
     <string name="price">Price</string>
     <string name="post">Post</string>
+    <string name="register">Register</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="shop_address">Shop Address</string>
+    <string name="business_registration_no">Business Registration No</string>
+    <string name="contact_no">Contact No</string>
+    <string name="shop_owner_id_no">Shop Owner ID No</string>
+    <string name="shop_owner_id_photo">Shop Owner ID photo</string>
+    <string name="business_registration_photo">Business Registration photo</string>
+    <string name="shop_logo">Shop Logo</string>
 </resources>
