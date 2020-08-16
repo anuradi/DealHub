@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.dealhub.R;
 
-public class Register_Customer extends AppCompatActivity {
+public class RegisterCustomer extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register__customer);
+        setContentView(R.layout.activity_register_customer);
     }
 }

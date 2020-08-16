@@ -8,7 +8,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.dealhub.R;
-import com.dealhub.fragment.cart;
+import com.dealhub.fragment.AddMyOffers_ShopOwner;
+import com.dealhub.fragment.AddShops_ShopOwner;
+import com.dealhub.fragment.Cart_Admin;
+import com.dealhub.fragment.MyOffers_ShopOwner;
+import com.dealhub.fragment.MyShops_ShopOwner;
+import com.dealhub.fragment.Profile_ShopOwner;
 import com.dealhub.fragment.favorite_customer;
 import com.dealhub.fragment.offers_customer;
 import com.dealhub.fragment.profile_customer;
@@ -34,25 +39,25 @@ public class MainActivity2 extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
             switch (menuItem.getItemId()) {
-                case R.id.nav_shop:
-                    selectedFragment = new shops_customer();
+                case R.id.nav_my_shop:
+                    selectedFragment = new MyShops_ShopOwner();
                     break;
 
-                case R.id.nav_offers:
-                    selectedFragment = new offers_customer();
+                case R.id.nav_my_offers:
+                    selectedFragment = new MyOffers_ShopOwner();
                     break;
 
-                case R.id.nav_favorite:
-                    selectedFragment = new favorite_customer();
+                case R.id.nav_add:
+                    selectedFragment = new AddShops_ShopOwner();
                     break;
 
                 case R.id.nav_profile:
-                    selectedFragment = new profile_customer();
+                    selectedFragment = new Profile_ShopOwner();
                     break;
 
 
-                case R.id.nav_cart:
-                    selectedFragment = new cart();
+                case R.id.nav_notifications:
+                    selectedFragment = new AddShops_ShopOwner();
                     break;
             }
             if (selectedFragment != null) {

@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Register_Shop_Owner extends AppCompatActivity {
+import com.dealhub.R;
+
+public class RegisterShopOwner extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register__shop__owner);
+        setContentView(R.layout.activity_register_shop_owner);
     }
 }
