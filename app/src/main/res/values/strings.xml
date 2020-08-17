@@ -26,4 +26,34 @@
     <string name="shop_owner_id_photo">Shop Owner ID photo</string>
     <string name="business_registration_photo">Business Registration photo</string>
     <string name="shop_logo">Shop Logo</string>
+    //hasitha
+    <string name="H1">Cart</string>
+    <string name="S1">KFC</string>
+    <string name="Btn1">Collect Offer</string>
+    <string name="EdBtn1">Edit</string>
+    <string name="S2">Pizza Hut</string>
+    <string name="Off2">COLLECT OFfER</string>
+    <string name="Ed2">Edit</string>
+    <string name="Del1">Delete</string>
+    <string name="Del2">Delete</string>
+    <string name="gtCp">Get Coupon</string>
+    <string name="em1">Enter Your e-mail</string>
+    <string name="mailSpc"></string>
+    <string name="coupBtn2">Get Coupon</string>
+    <string name="COff">Collect Offer</string>
+    <string name="Des1">Buy 1 Large pizza for 1700/= and get discount of 10%</string>
+    <string name="Pric1">3400</string>
+    <string name="Dis">340</string>
+    <string name="prs1">Price</string>
+    <string name="DcPrc">Discounted Price</string>
+    <string name="Dc">Discount</string>
+    <string name="DcPricM">1530.00</string>
+    <string name="ExpDt">Only till 31 December</string>
+    <string name="Qty">2</string>
+    <string name="sve">Save</string>
+    <string name="Dte">Delete</string>
+    <string name="gtcup2">Get Coupon</string>
+    <string name="Lastprc">Total</string>
+    <string name="ttl">3060.00</string>
+    <string name="Qnt">Quantity</string>
 </resources>
