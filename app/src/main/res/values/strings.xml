@@ -56,4 +56,12 @@
     <string name="Lastprc">Total</string>
     <string name="ttl">3060.00</string>
     <string name="Qnt">Quantity</string>
+    //Namal
+    <string name="LG1">LOG IN</string>
+    <string name="SG1">SIGN UP</string>
+    <string name="SG2">Don\'t have an account yet?</string>
+    <string name="FG1">Forgot Password</string>
+    <string name="getdeal">I want to get deals</string>
+    <string name="givedeal">I want to give deals</string>
+    <string name="des1">No matter how good your new product or service, it won\'t fly off the shelves unless you promote it properly. Try these road-tested techniques to make sure your target customers are aware that you have an attractive new product or service on the market</string>
 </resources>
