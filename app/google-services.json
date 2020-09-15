@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1062162829858",
+    "firebase_url": "https://dealhub-ffd45.firebaseio.com",
+    "project_id": "dealhub-ffd45",
+    "storage_bucket": "dealhub-ffd45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062162829858:android:bd388b80678f800950f07b",
+        "android_client_info": {
+          "package_name": "com.dealhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062162829858-3pgvmpeqr84k0l87ag823uqq1makfiuk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwzvZmkoakw43Jkd1eNv4UBaNnCk4gAKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062162829858-3pgvmpeqr84k0l87ag823uqq1makfiuk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
