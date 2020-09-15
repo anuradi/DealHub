@@ -25,99 +25,13 @@
                     android:id="@+id/app_name"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
-                 android:background="@drawable/shops_name"
-                    android:layout_alignParentStart="true"/>
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/shops_name" />
 
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="55dp"
-        android:background="@drawable/post_boader"
-        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="2dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/shop_logo"
-                android:src="@drawable/shop_logo_test"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="4dp" />
-
-            <TextView
-                android:id="@+id/shop_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="55dp"
-                android:layout_marginEnd="50dp"
-                android:text="Arpico Super Center - Colombo"
-                android:textColor="#2B2A2A"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/ic_more" />
-
-        </RelativeLayout>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/shop_image"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/arpico_shop"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#C4F7F5F5"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/shop_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/shop_red" />
-
-            <TextView
-                android:id="@+id/shop_address"
-                android:layout_width="250dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/shop_icon"
-                android:text="155/c Colombo Road galgamuwa mirihana." />
-
-            <ImageView
-                android:id="@+id/subcribe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/subscribe" />
-
-        </RelativeLayout>
-    </LinearLayout>
 </RelativeLayout>
