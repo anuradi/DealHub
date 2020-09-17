@@ -97,7 +97,7 @@
                 android:layout_marginTop="16dp"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/bio"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -105,12 +105,12 @@
                 android:layout_margin="8dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:text="Shop Owner Address"
+                android:hint="Shop Owner Address"
                 android:textSize="18sp" />
 
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/logout"
+                android:id="@+id/edit_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="32dp"

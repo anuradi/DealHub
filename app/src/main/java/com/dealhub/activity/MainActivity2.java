@@ -1,9 +1,11 @@
 package com.dealhub.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -13,12 +15,14 @@ import com.dealhub.fragment.AddShops_ShopOwner;
 import com.dealhub.fragment.Cart_Admin;
 import com.dealhub.fragment.MyOffers_ShopOwner;
 import com.dealhub.fragment.MyShops_ShopOwner;
+import com.dealhub.fragment.Notifications_ShopOwner;
 import com.dealhub.fragment.Profile_ShopOwner;
 import com.dealhub.fragment.favorite_customer;
 import com.dealhub.fragment.offers_customer;
 import com.dealhub.fragment.profile_customer;
 import com.dealhub.fragment.shops_customer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 public class MainActivity2 extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -57,7 +61,7 @@ public class MainActivity2 extends AppCompatActivity {
 
 
                 case R.id.nav_notifications:
-                    selectedFragment = new AddShops_ShopOwner();
+                    selectedFragment = new Notifications_ShopOwner();
                     break;
             }
             if (selectedFragment != null) {
@@ -68,4 +72,12 @@ public class MainActivity2 extends AppCompatActivity {
 
 
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }
