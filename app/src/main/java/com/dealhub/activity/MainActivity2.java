@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -52,7 +54,27 @@ public class MainActivity2 extends AppCompatActivity {
                     break;
 
                 case R.id.nav_add:
-                    selectedFragment = new AddShops_ShopOwner();
+                    AlertDialog alertDialog =new AlertDialog.Builder(MainActivity2.this).create();
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Add Shop", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            selectedFragment = new AddShops_ShopOwner();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                            dialog.dismiss();
+
+                        }
+                    });
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Add Offer", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            selectedFragment = new AddMyOffers_ShopOwner();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+
                     break;
 
                 case R.id.nav_profile:

@@ -62,6 +62,7 @@ public class AddShops_ShopOwner extends Fragment {
     private StorageTask uplaodTasknic;
     private StorageTask uplaodTaskbr;
     private StorageTask uplaodTasklogo;
+    private StorageTask uplaodTaskshopimage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,12 +171,10 @@ public class AddShops_ShopOwner extends Fragment {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("************************" + dataSnapshot.getChildrenCount());
                 if (dataSnapshot.getChildrenCount() == 0) {
                     shopid = 0;
                 } else {
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                        System.out.println("&&&&&&&&&&&&&&&&&&" + snap.getKey());
                         int key = Integer.parseInt(snap.getKey());
                         if (shopid < key) {
                             shopid = key;
@@ -187,6 +186,7 @@ public class AddShops_ShopOwner extends Fragment {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("shopid", shopid);
                 hashMap.put("shopname", shop_name);
+                hashMap.put("shopbrno", shop_brno);
                 hashMap.put("address", shop_address);
                 hashMap.put("email", shop_brno);
                 hashMap.put("contactno", shop_contact);
@@ -212,6 +212,44 @@ public class AddShops_ShopOwner extends Fragment {
     }
 
     private void uploadImages(final int shopid) {
+        final StorageReference filerefrenceshopimg = storageReference.child("" + shopid).child("shopimg.jpg");
+        uplaodTaskshopimage = filerefrenceshopimg.putFile(URIshopphoto);
+
+        uplaodTaskshopimage.continueWithTask(new Continuation() {
+            @Override
+            public Object then(@NonNull Task task) throws Exception {
+
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return filerefrenceshopimg.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    String myUrl = null;
+                    if (downloadUri != null) {
+                        myUrl = downloadUri.toString();
+                    }
+
+                    DatabaseReference reference = databaseReference.child("" + shopid);
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("shopimageurl", "" + myUrl);
+
+                    reference.updateChildren(hashMap);
+                } else {
+                    Toast.makeText(getActivity(), "Failed to upload shop image", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
         final StorageReference filerefrencenic = storageReference.child("" + shopid).child("nic.jpg");
         uplaodTasknic = filerefrencenic.putFile(URIidphoto);
 
@@ -240,7 +278,7 @@ public class AddShops_ShopOwner extends Fragment {
 
                     reference.updateChildren(hashMap);
                 } else {
-                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to upload nic", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -279,7 +317,7 @@ public class AddShops_ShopOwner extends Fragment {
 
                     reference.updateChildren(hashMap);
                 } else {
-                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to upload br image", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -321,7 +359,7 @@ public class AddShops_ShopOwner extends Fragment {
                     Toast.makeText(getActivity(), "Shop Added. We will let you know once its verified", Toast.LENGTH_SHORT).show();
                     clearFields();
                 } else {
-                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to upload logo", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
