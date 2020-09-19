@@ -2,65 +2,81 @@ package com.dealhub.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dealhub.R;
+import com.dealhub.adapters.MyOffersAdapter_ShopOwner;
+import com.dealhub.adapters.MyShopsAdapter_ShopOwner;
+import com.dealhub.models.MyOffers;
+import com.dealhub.models.MyShops;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyOffers_ShopOwner#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
+
 public class MyOffers_ShopOwner extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ArrayList<MyOffers> myoffers;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MyOffers_ShopOwner() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyOffers_ShopOwner.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MyOffers_ShopOwner newInstance(String param1, String param2) {
-        MyOffers_ShopOwner fragment = new MyOffers_ShopOwner();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    FirebaseUser firebaseUser;
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
+    DatabaseReference shopReference;
+    MyOffersAdapter_ShopOwner adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_offers_shop_owner, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_offers_shop_owner, container, false);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        storageReference = FirebaseStorage.getInstance().getReference("Offers").child(firebaseUser.getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference("Offers").child(firebaseUser.getUid());
+        shopReference = FirebaseDatabase.getInstance().getReference("Shops").child(firebaseUser.getUid());
+        myoffers=new ArrayList<>();
+        RecyclerView recyclerView = view.findViewById(R.id.myofferdata);
+        FragmentManager fragmentManager = getFragmentManager();
+        adapter=new MyOffersAdapter_ShopOwner(getActivity(),fragmentManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()){
+                    MyOffers myOffers_shopOwner = snap.getValue(MyOffers.class);
+                    myoffers.add(myOffers_shopOwner);
+                }
+                adapter.loadMyOffers(myoffers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return view;
     }
 }

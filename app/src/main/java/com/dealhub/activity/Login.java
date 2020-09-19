@@ -1,5 +1,6 @@
 package com.dealhub.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class Login extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth auth;
 
+    @SuppressLint("MissingPermission")
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -126,8 +128,8 @@ public class Login extends AppCompatActivity {
                             Intent intent = new Intent(Login.this, MainActivity2.class);
                             startActivity(intent);
                             finish();
+                            break;
                         }
-                        break;
                     }
                 }
             }

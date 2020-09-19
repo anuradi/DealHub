@@ -8,4 +8,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#727475</color>
     <color name="colorOrange">#FFD600</color>
+    <color name="spinner_bg">#92D9D9D9</color>
 </resources>

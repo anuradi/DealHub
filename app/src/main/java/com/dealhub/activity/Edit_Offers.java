@@ -1,28 +1,27 @@
-package com.dealhub.fragment;
+package com.dealhub.activity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.dealhub.R;
 import com.dealhub.dialogs.DatePickerDialog;
+import com.dealhub.models.MyOffers;
 import com.dealhub.models.MyShops;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,58 +37,75 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-public class AddMyOffers_ShopOwner extends Fragment {
-
+public class Edit_Offers extends AppCompatActivity {
     AppCompatImageView offerimg;
-    AppCompatSpinner shopname;
+    Spinner shopname;
     AppCompatEditText description, price, discount,expdate;
     AppCompatButton postoffer;
-    ArrayAdapter<String> adapter;
-    ArrayList<String> sinpperArrayList;
     DatabaseReference databaseReference;
     DatabaseReference shopReference;
     FirebaseUser firebaseUser;
     StorageReference storageReference;
     private StorageTask uplaodTask;
-    String str_shopname;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> sinpperArrayList;
     private static final int OFFERIMAGE = 102;
     private Uri URIofferimg;
     ProgressDialog pd;
-    int offerid;
+    String str_shopname;
+    String offerid;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_my_offers_shop_owner, container, false);
-        offerimg = view.findViewById(R.id.pro_pic);
-        shopname = view.findViewById(R.id.shopname);
-        description = view.findViewById(R.id.description);
-        expdate=view.findViewById(R.id.exp_date);
-        price = view.findViewById(R.id.price);
-        discount = view.findViewById(R.id.discount);
-        postoffer = view.findViewById(R.id.post);
+        setContentView(R.layout.activity_edit__offers);
+        offerid = getIntent().getStringExtra("offerid");
+        offerimg = findViewById(R.id.pro_pic);
+        shopname = findViewById(R.id.shopname);
+        description = findViewById(R.id.description);
+        expdate=findViewById(R.id.exp_date);
+        price = findViewById(R.id.price);
+        discount = findViewById(R.id.discount);
+        postoffer = findViewById(R.id.post);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        storageReference = FirebaseStorage.getInstance().getReference("Offers").child(firebaseUser.getUid());
-        databaseReference = FirebaseDatabase.getInstance().getReference("Offers").child(firebaseUser.getUid());
         shopReference = FirebaseDatabase.getInstance().getReference("Shops").child(firebaseUser.getUid());
+        storageReference = FirebaseStorage.getInstance().getReference("Offers").child(firebaseUser.getUid());
         sinpperArrayList = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, sinpperArrayList);
-
-
+        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, sinpperArrayList);
         shopname.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         loadShopName();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Offers").child(firebaseUser.getUid()).child(offerid);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                MyOffers offers=dataSnapshot.getValue(MyOffers.class);
+                Picasso.get().load(offers.getOfferimageurl()).into(offerimg);
+                shopname.setSelection(adapter.getPosition(offers.getShopname()));
+                description.setText(offers.getOfferdescription());
+                expdate.setText(offers.getExpdate());
+                price.setText(offers.getOfferprice());
+                discount.setText(offers.getOfferdiscount());
+                str_shopname=offers.getShopname();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        expdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog();
+                datePickerDialog.show(getSupportFragmentManager(), "datepicker");
+            }
+        });
         shopname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
@@ -101,15 +117,6 @@ public class AddMyOffers_ShopOwner extends Fragment {
 
             }
         });
-
-        expdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog();
-                datePickerDialog.show(getActivity().getSupportFragmentManager(), "datepicker");
-            }
-        });
-
         offerimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +127,6 @@ public class AddMyOffers_ShopOwner extends Fragment {
                 startActivityForResult(intent, OFFERIMAGE);
             }
         });
-
         postoffer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,43 +135,27 @@ public class AddMyOffers_ShopOwner extends Fragment {
                 String str_discount = discount.getText().toString();
                 String str_expdate = expdate.getText().toString();
                 if (shopname == null) {
-                    Toast.makeText(getActivity(), "Select your shop name", Toast.LENGTH_SHORT).show();
-                }else if(URIofferimg==null){
-                    Toast.makeText(getActivity(), "Select image for the offers", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Select your shop name", Toast.LENGTH_SHORT).show();
                 }else if (str_description.isEmpty() || str_discount.isEmpty() || str_price.isEmpty() || str_expdate.isEmpty()) {
-                    Toast.makeText(getActivity(), "All fields required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "All fields required", Toast.LENGTH_SHORT).show();
                 }else{
                     postOffer(str_description,str_price,str_discount,str_expdate);
                 }
             }
         });
-
-        return view;
     }
 
     private void postOffer(final String str_description, final String str_price, final String str_discount, final String str_expdate) {
-        pd = new ProgressDialog(getActivity());
-        pd.setMessage("Adding your Offer");
+        pd = new ProgressDialog(Edit_Offers.this);
+        pd.setMessage("Updating your Offer");
         pd.show();
         pd.setCanceledOnTouchOutside(false);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    offerid = 0;
-                } else {
-                    for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                        int key = Integer.parseInt(snap.getKey());
-                        if (offerid < key) {
-                            offerid = key;
-                        }
-                    }
-                }
-                offerid++;
-
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("offerid", offerid);
+                hashMap.put("offerid", Integer.parseInt(offerid));
                 hashMap.put("shopname", str_shopname);
                 hashMap.put("expdate", str_expdate);
                 hashMap.put("offerdescription", str_description);
@@ -173,12 +163,10 @@ public class AddMyOffers_ShopOwner extends Fragment {
                 hashMap.put("offerdiscount", str_discount);
                 hashMap.put("status", "Active");
                 hashMap.put("likes", 0);
-                databaseReference.child("" + offerid).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                databaseReference.updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         uploadImages(offerid);
-                        //pd.dismiss();
-                        //Toast.makeText(getActivity(), "Shop Added. We will let you know once its verified", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -191,59 +179,53 @@ public class AddMyOffers_ShopOwner extends Fragment {
         });
     }
 
-    private void uploadImages(final int offerid) {
-        final StorageReference filerefrenceoffer = storageReference.child("" + offerid).child("offerimg.jpg");
-        uplaodTask = filerefrenceoffer.putFile(URIofferimg);
+    private void uploadImages(final String offerid) {
+        if (URIofferimg!=null){
+            final StorageReference filerefrenceoffer = storageReference.child("" + offerid).child("offerimg.jpg");
+            uplaodTask = filerefrenceoffer.putFile(URIofferimg);
 
-        uplaodTask.continueWithTask(new Continuation() {
-            @Override
-            public Object then(@NonNull Task task) throws Exception {
+            uplaodTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
 
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                return filerefrenceoffer.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    String myUrl = null;
-                    if (downloadUri != null) {
-                        myUrl = downloadUri.toString();
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
                     }
-
-                    DatabaseReference reference = databaseReference.child("" + offerid);
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("offerimageurl", "" + myUrl);
-
-                    reference.updateChildren(hashMap);
-                    pd.dismiss();
-                    Toast.makeText(getActivity(), "Offer Added Successfully", Toast.LENGTH_SHORT).show();
-                    clearFields();
-                } else {
-                    Toast.makeText(getActivity(), "Failed to upload offer image", Toast.LENGTH_SHORT).show();
+                    return filerefrenceoffer.getDownloadUrl();
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String myUrl = null;
+                        if (downloadUri != null) {
+                            myUrl = downloadUri.toString();
+                        }
 
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("offerimageurl", "" + myUrl);
 
-    private void clearFields() {
-        offerimg.setBackgroundResource(R.drawable.add);
-        offerimg.setImageResource(R.drawable.button_black);
-        URIofferimg=null;
-        str_shopname=null;
-        description.setText("");
-        price.setText("");
-        discount.setText("");
-        loadShopName();
+                        databaseReference.updateChildren(hashMap);
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Offer Updated Successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Failed to upload offer image", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            pd.dismiss();
+            Toast.makeText(getApplicationContext(), "Offer Updated Successfully", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void loadShopName() {

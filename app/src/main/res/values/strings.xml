@@ -66,4 +66,9 @@
     <string name="des1">No matter how good your new product or service, it won\'t fly off the shelves unless you promote it properly. Try these road-tested techniques to make sure your target customers are aware that you have an attractive new product or service on the market</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="exp_date">Exp Date</string>
+    <string name="conformation">Confirmation</string>
+    <string name="are_you_sure_you_want_to_post_this">Are you sure want to delete this offer</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
 </resources>
