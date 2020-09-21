@@ -60,7 +60,7 @@ public class ShopsAdapter_Customer extends RecyclerView.Adapter<ShopsAdapter_Cus
         final MyShops shp= (MyShops) shops.get(position);
         Picasso.get().load(shp.getLogourl()).into(holder.shoplogo);
         holder.shopname.setText(shp.getShopname());
-        Picasso.get().load(shp.getLogourl()).into(holder.shopimage);
+        Picasso.get().load(shp.getShopimageurl()).into(holder.shopimage);
         holder.shopaddress.setText(shp.getAddress());
         DatabaseReference following = databaseReference.child(firebaseUser.getUid()).child("Following").child(shp.getShopname());
         following.addValueEventListener(new ValueEventListener() {

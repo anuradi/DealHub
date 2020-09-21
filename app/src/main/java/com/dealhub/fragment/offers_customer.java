@@ -106,7 +106,6 @@ public class offers_customer extends Fragment {
                     shops.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            System.out.println(offersfinal.size());
                             for (DataSnapshot snp1:dataSnapshot.getChildren()){
                                 for(DataSnapshot snp2:snp1.getChildren()){
                                     MyShops msp=snp2.getValue(MyShops.class);

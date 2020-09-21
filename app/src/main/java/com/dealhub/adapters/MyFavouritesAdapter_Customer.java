@@ -27,7 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,37 +34,37 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_Customer.ViewHolder> {
-    private ArrayList offers;
+public class MyFavouritesAdapter_Customer extends RecyclerView.Adapter<MyFavouritesAdapter_Customer.ViewHolder>{
+    private ArrayList myfavourite;
     private Context context;
     private FragmentManager fragmentManager;
     DatabaseReference databaseReference;
     FirebaseUser firebaseUser;
 
-    public OffersAdapter_Customer(Context context, FragmentManager fragmentManager) {
-        offers = new ArrayList();
+    public MyFavouritesAdapter_Customer(Context context, FragmentManager fragmentManager) {
+        myfavourite=new ArrayList();
         this.context = context;
         this.fragmentManager = fragmentManager;
         databaseReference = FirebaseDatabase.getInstance().getReference("Offers");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public void loadOffers(ArrayList output) {
-        this.offers = output;
+    public void loadMyFavourite(ArrayList output) {
+        this.myfavourite = output;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.offers_adapter, parent, false);
-        OffersAdapter_Customer.ViewHolder vh = new OffersAdapter_Customer.ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_adapter, parent, false);
+        MyFavouritesAdapter_Customer.ViewHolder vh = new MyFavouritesAdapter_Customer.ViewHolder(view);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final MyOffers ofr = (MyOffers) offers.get(position);
+        final MyOffers ofr = (MyOffers) myfavourite.get(position);
         Picasso.get().load(ofr.getShoplogourl()).into(holder.shoplogo);
         holder.shopname.setText(ofr.getShopname());
         Picasso.get().load(ofr.getOfferimageurl()).into(holder.shopimage);
@@ -243,7 +242,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
 
     @Override
     public int getItemCount() {
-        return offers.size();
+        return myfavourite.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
