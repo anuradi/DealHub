@@ -65,6 +65,7 @@
             android:id="@+id/like"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:tag="like"
             android:src="@drawable/like_red" />
 
         <ImageView

@@ -59,6 +59,8 @@ public class CommentDialog extends DialogFragment {
 
         Bundle bundle = getArguments();
         final String offer = bundle.getString("offer");
+        final String shopname = bundle.getString("shopname");
+        final String login = bundle.getString("login");
         alert.setView(view);
 
         final AlertDialog alertDialog = alert.create();
@@ -69,14 +71,21 @@ public class CommentDialog extends DialogFragment {
         comments = new ArrayList<>();
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        userReference = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
-        databaseReference = FirebaseDatabase.getInstance().getReference("Comments").child(offer);
+        if (login.equals("shopowner")){
+            userReference = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
+        }else if(login.equals("customer")){
+            userReference = FirebaseDatabase.getInstance().getReference("Customers").child(firebaseUser.getUid());
+        }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Comments").child(shopname).child(offer);
 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ShopOwners shpowner=dataSnapshot.getValue(ShopOwners.class);
-                Picasso.get().load(shpowner.getImageurl()).into(userdp);
+                if (dataSnapshot.getValue()!=null){
+                    ShopOwners shpowner=dataSnapshot.getValue(ShopOwners.class);
+                    Picasso.get().load(shpowner.getImageurl()).into(userdp);
+                }
             }
 
             @Override
@@ -113,27 +122,31 @@ public class CommentDialog extends DialogFragment {
                 String str_cmnt = cmnt.getText().toString();
                 if (!str_cmnt.isEmpty()) {
                     DatabaseReference owners = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
-                    owners.addValueEventListener(new ValueEventListener() {
+                    userReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            ShopOwners shpowner=dataSnapshot.getValue(ShopOwners.class);
+                            if (dataSnapshot.getValue()!=null){
+                                ShopOwners shpowner=dataSnapshot.getValue(ShopOwners.class);
                                 String imageurl = "";
 
-                                    imageurl = shpowner.getImageurl().toString();
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("profileurl", imageurl);
-                                    hashMap.put("offerid", offer);
-                                    hashMap.put("publisher", firebaseUser.getUid());
-                                    hashMap.put("comment", cmnt.getText().toString());
-                                    hashMap.put("publishername", shpowner.getFname()+" "+shpowner.getLname());
-                                    databaseReference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            cmnt.setText("");
-                                        }
-                                    });
-
-
+                                imageurl = shpowner.getImageurl().toString();
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("profileurl", imageurl);
+                                hashMap.put("offerid", offer);
+                                hashMap.put("publisher", firebaseUser.getUid());
+                                hashMap.put("comment", cmnt.getText().toString());
+                                if (login.equals("customer")) {
+                                    hashMap.put("publishername", shpowner.getFname() + " " + shpowner.getLname());
+                                }else if(login.equals("shopowner")){
+                                    hashMap.put("publishername", shopname);
+                                }
+                                databaseReference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        cmnt.setText("");
+                                    }
+                                });
+                            }
                         }
 
                         @Override

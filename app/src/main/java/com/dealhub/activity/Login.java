@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
 
         if (isNetworkConnected()) {
             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (firebaseUser != null) {
+            if (firebaseUser != null && firebaseUser.isEmailVerified()) {
                 redirectToHome();
             } else {
                 setContentView(R.layout.activity_login);
@@ -126,6 +126,11 @@ public class Login extends AppCompatActivity {
                         String parent = childSnapshot.getKey();
                         if (parent.equals("Shop Owners")) {
                             Intent intent = new Intent(Login.this, MainActivity2.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        }else if (parent.equals("Customers")) {
+                            Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                             break;

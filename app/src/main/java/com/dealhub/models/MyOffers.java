@@ -10,11 +10,12 @@ public class MyOffers {
     String expdate;
     String status;
     int likes;
+    String shoplogourl;
 
     public MyOffers() {
     }
 
-    public MyOffers(int offerid, String shopname, String offerdescription, String offerprice, String offerdiscount, String offerimageurl, String expdate, String status, int likes) {
+    public MyOffers(int offerid, String shopname, String offerdescription, String offerprice, String offerdiscount, String offerimageurl, String expdate, String status, int likes, String shoplogourl) {
         this.offerid = offerid;
         this.shopname = shopname;
         this.offerdescription = offerdescription;
@@ -24,6 +25,7 @@ public class MyOffers {
         this.expdate = expdate;
         this.status = status;
         this.likes = likes;
+        this.shoplogourl = shoplogourl;
     }
 
     public int getOfferid() {
@@ -96,5 +98,13 @@ public class MyOffers {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public String getShoplogourl() {
+        return shoplogourl;
+    }
+
+    public void setShoplogourl(String shoplogourl) {
+        this.shoplogourl = shoplogourl;
     }
 }
