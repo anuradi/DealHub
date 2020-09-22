@@ -29,13 +29,14 @@
                     android:src="@drawable/app_name" />
 
 
-                <androidx.appcompat.widget.SearchView
+                <EditText
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/search_boader"
                     android:layout_toEndOf="@+id/app_name"
                     android:layout_margin="8dp"
+                    android:paddingLeft="8dp"
                     android:src="@drawable/cart" />
 
             </RelativeLayout>
