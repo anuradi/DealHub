@@ -100,7 +100,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                 cmntDialog.show(fragmentManager, "comment_dialog");
             }
         });
-        DatabaseReference following = FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname());
+        DatabaseReference following = FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child(""+ofr.getOfferid());
         following.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -121,7 +121,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                                         for (DataSnapshot snap2 : snap1.getChildren()) {
                                             oid = snap2.getKey();
                                             final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
-                                            if (offers_shopOwner.getShopname().equals(ofr.getShopname())) {
+                                            if (offers_shopOwner.getShopname().equals(ofr.getShopname()) && offers_shopOwner.getOfferid()==ofr.getOfferid()) {
                                                 int likesoffer = offers_shopOwner.getLikes();
                                                 likesoffer++;
                                                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -158,7 +158,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                                         for (DataSnapshot snap2 : snap1.getChildren()) {
                                             oid = snap2.getKey();
                                             final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
-                                            if (offers_shopOwner.getShopname().equals(ofr.getShopname())) {
+                                            if (offers_shopOwner.getShopname().equals(ofr.getShopname()) && offers_shopOwner.getOfferid()==ofr.getOfferid()) {
                                                 int likesoffer = offers_shopOwner.getLikes();
                                                 likesoffer--;
                                                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -201,7 +201,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
         });
 
 
-        DatabaseReference favourites = FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname());
+        DatabaseReference favourites = FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child(""+ofr.getOfferid());
         favourites.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

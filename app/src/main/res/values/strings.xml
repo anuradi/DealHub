@@ -71,4 +71,5 @@
     <string name="are_you_sure_you_want_to_post_this">Are you sure want to delete this offer</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
+    <string name="log_out">Log Out</string>
 </resources>

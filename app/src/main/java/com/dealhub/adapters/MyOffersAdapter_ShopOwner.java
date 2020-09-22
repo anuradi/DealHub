@@ -136,7 +136,7 @@ public class MyOffersAdapter_ShopOwner extends RecyclerView.Adapter<MyOffersAdap
             }
         });
 
-        DatabaseReference following = FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ms.getShopname());
+        DatabaseReference following = FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ms.getShopname()).child(""+ms.getOfferid());
         following.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -157,7 +157,7 @@ public class MyOffersAdapter_ShopOwner extends RecyclerView.Adapter<MyOffersAdap
                                         for (DataSnapshot snap2 : snap1.getChildren()) {
                                             oid = snap2.getKey();
                                             final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
-                                            if (offers_shopOwner.getShopname().equals(ms.getShopname())) {
+                                            if (offers_shopOwner.getShopname().equals(ms.getShopname()) &&offers_shopOwner.getOfferid()==ms.getOfferid()) {
                                                 int likesoffer = offers_shopOwner.getLikes();
                                                 likesoffer++;
                                                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -194,7 +194,7 @@ public class MyOffersAdapter_ShopOwner extends RecyclerView.Adapter<MyOffersAdap
                                         for (DataSnapshot snap2 : snap1.getChildren()) {
                                             oid = snap2.getKey();
                                             final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
-                                            if (offers_shopOwner.getShopname().equals(ms.getShopname())) {
+                                            if (offers_shopOwner.getShopname().equals(ms.getShopname()) &&offers_shopOwner.getOfferid()==ms.getOfferid()) {
                                                 int likesoffer = offers_shopOwner.getLikes();
                                                 likesoffer--;
                                                 HashMap<String, Object> hashMap = new HashMap<>();

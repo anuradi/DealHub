@@ -115,7 +115,15 @@ public class MyOffers_ShopOwner extends Fragment {
                                     MyShops msp=snp2.getValue(MyShops.class);
                                     if (off.getShopname().equals(msp.getShopname())) {
                                         off.setShoplogourl(msp.getLogourl());
-                                        offersfinal.add(off);
+                                        boolean exist=false;
+                                        for(MyOffers finalo:offersfinal){
+                                            if (finalo.getOfferid()==off.getOfferid()){
+                                                exist=true;
+                                            }
+                                        }
+                                        if (!exist){
+                                            offersfinal.add(off);
+                                        }
                                     }
                                 }
                             }

@@ -16,12 +16,17 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.dealhub.R;
+import com.dealhub.activity.Login;
+import com.dealhub.dialogs.SampleDialog;
 import com.dealhub.models.ShopOwners;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,6 +57,7 @@ public class Profile_ShopOwner extends Fragment {
     AppCompatTextView name,email,contactno;
     AppCompatEditText address;
     AppCompatButton update;
+    ImageView logout;
 
     FirebaseUser firebaseUser;
     StorageReference storageReference;
@@ -75,6 +81,7 @@ public class Profile_ShopOwner extends Fragment {
         address=view.findViewById(R.id.bio);
         user_img=view.findViewById(R.id.user_image);
         update=view.findViewById(R.id.edit_profile);
+        logout=view.findViewById(R.id.logout_menu);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference("shopowner");
@@ -104,6 +111,33 @@ public class Profile_ShopOwner extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.log:
+                                Bundle bundle = new Bundle();
+                                bundle.putString("logout", "logout");
+                                bundle.putString("offer", "");
+                                SampleDialog smpDialog = new SampleDialog();
+                                smpDialog.setArguments(bundle);
+                                smpDialog.show(getFragmentManager(), "sure_dialog");
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.inflate(R.menu.logout);
+
+                popupMenu.show();
             }
         });
 

@@ -89,13 +89,14 @@ public class offers_customer extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 offers.clear();
+                offersfinal.clear();
                 for (DataSnapshot snap1 : dataSnapshot.getChildren()) {
                     for (DataSnapshot snap2 : snap1.getChildren()) {
                         final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
                         for(String shpname:shopnamelist){
                             if (offers_shopOwner.getShopname().equals(shpname)) {
-
                                 offers.add(offers_shopOwner);
+                                System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
                             }
                         }
                     }
@@ -103,7 +104,7 @@ public class offers_customer extends Fragment {
                 for (final MyOffers off:offers){
                     offersfinal.clear();
                     DatabaseReference shops = FirebaseDatabase.getInstance().getReference("Shops");
-                    shops.addValueEventListener(new ValueEventListener() {
+                    shops.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot snp1:dataSnapshot.getChildren()){
@@ -111,11 +112,20 @@ public class offers_customer extends Fragment {
                                     MyShops msp=snp2.getValue(MyShops.class);
                                     if (off.getShopname().equals(msp.getShopname())) {
                                         off.setShoplogourl(msp.getLogourl());
-                                        offersfinal.add(off);
+                                        boolean exist=false;
+                                        for(MyOffers finalo:offersfinal){
+                                            if (finalo.getOfferid()==off.getOfferid()){
+                                                exist=true;
+                                            }
+                                        }
+                                        if (!exist){
+                                            offersfinal.add(off);
+                                        }
                                     }
                                 }
                             }
                             adapter.loadOffers(offersfinal);
+//                            shopnamelist.clear();
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
