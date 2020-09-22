@@ -22,8 +22,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.dealhub.R;
+import com.dealhub.activity.MainActivity;
 import com.dealhub.dialogs.DatePickerDialog;
 import com.dealhub.models.MyShops;
+import com.dealhub.notifications.Client;
+import com.dealhub.notifications.Data;
+import com.dealhub.notifications.MyResponse;
+import com.dealhub.notifications.Sender;
+import com.dealhub.notifications.Token;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +40,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -41,6 +48,10 @@ import com.google.firebase.storage.StorageTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class AddMyOffers_ShopOwner extends Fragment {
@@ -61,6 +72,7 @@ public class AddMyOffers_ShopOwner extends Fragment {
     private Uri URIofferimg;
     ProgressDialog pd;
     int offerid;
+    APIService apiService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +98,7 @@ public class AddMyOffers_ShopOwner extends Fragment {
         sinpperArrayList = new ArrayList<>();
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, sinpperArrayList);
 
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         shopname.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -177,11 +190,85 @@ public class AddMyOffers_ShopOwner extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         uploadImages(offerid);
+                        manageSendingNotification(str_shopname,str_description);
                         //pd.dismiss();
                         //Toast.makeText(getActivity(), "Shop Added. We will let you know once its verified", Toast.LENGTH_SHORT).show();
 
                     }
                 });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void manageSendingNotification(final String str_shopname, final String str_description) {
+        final DatabaseReference follow = FirebaseDatabase.getInstance().getReference("Follow");
+        follow.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snap:dataSnapshot.getChildren()) {
+                    final String receiver=snap.getKey();
+                    DatabaseReference following = snap.getRef().child("Following");
+                    following.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                            for (DataSnapshot snap1 : dataSnapshot1.getChildren()) {
+                                if(snap1.getKey().equals(str_shopname)){
+                                    sendNotification(str_shopname,str_description,receiver);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void sendNotification(final String str_shopname, final String str_description, final String receiver) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(firebaseUser.getUid(), R.mipmap.ic_launcher, str_shopname + ": " + str_description, "New Offer Released",
+                            receiver);
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if (response.code() == 200) {
+                                        System.out.println(response.body().success);
+                                        if (response.body().success != 1) {
+                                            Toast.makeText(getActivity(), "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
             }
 
             @Override
@@ -254,8 +341,9 @@ public class AddMyOffers_ShopOwner extends Fragment {
                 sinpperArrayList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     MyShops myShops = snapshot.getValue(MyShops.class);
-                    sinpperArrayList.add(myShops.getShopname());
-
+                    if (myShops.getStatus().equals("Active")) {
+                        sinpperArrayList.add(myShops.getShopname());
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

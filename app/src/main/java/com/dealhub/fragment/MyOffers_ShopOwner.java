@@ -33,11 +33,14 @@ import java.util.ArrayList;
 public class MyOffers_ShopOwner extends Fragment {
 
     ArrayList<MyOffers> myoffers;
+    ArrayList<MyOffers> offersfinal;
+    ArrayList<String> shopnamelist;
 
     FirebaseUser firebaseUser;
     StorageReference storageReference;
     DatabaseReference databaseReference;
     DatabaseReference shopReference;
+    DatabaseReference offerReference;
     MyOffersAdapter_ShopOwner adapter;
 
     @Override
@@ -55,7 +58,10 @@ public class MyOffers_ShopOwner extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference("Offers").child(firebaseUser.getUid());
         databaseReference = FirebaseDatabase.getInstance().getReference("Offers").child(firebaseUser.getUid());
         shopReference = FirebaseDatabase.getInstance().getReference("Shops").child(firebaseUser.getUid());
+        offerReference = FirebaseDatabase.getInstance().getReference("Offers");
         myoffers=new ArrayList<>();
+        offersfinal = new ArrayList<>();
+        shopnamelist = new ArrayList<>();
         RecyclerView recyclerView = view.findViewById(R.id.myofferdata);
         FragmentManager fragmentManager = getFragmentManager();
         adapter=new MyOffersAdapter_ShopOwner(getActivity(),fragmentManager);
@@ -66,9 +72,11 @@ public class MyOffers_ShopOwner extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap : dataSnapshot.getChildren()){
                     MyOffers myOffers_shopOwner = snap.getValue(MyOffers.class);
-                    myoffers.add(myOffers_shopOwner);
+//                    myoffers.add(myOffers_shopOwner);
+                    shopnamelist.add(myOffers_shopOwner.getShopname());
                 }
-                adapter.loadMyOffers(myoffers);
+                showOffers();
+//                adapter.loadMyOffers(myoffers);
             }
 
             @Override
@@ -78,5 +86,53 @@ public class MyOffers_ShopOwner extends Fragment {
         });
 
         return view;
+    }
+
+    private void showOffers() {
+        offerReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myoffers.clear();
+                for (DataSnapshot snap1 : dataSnapshot.getChildren()) {
+                    for (DataSnapshot snap2 : snap1.getChildren()) {
+                        final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
+                        for(String shpname:shopnamelist){
+                            if (offers_shopOwner.getShopname().equals(shpname)) {
+
+                                myoffers.add(offers_shopOwner);
+                            }
+                        }
+                    }
+                }
+                for (final MyOffers off:myoffers){
+                    offersfinal.clear();
+                    DatabaseReference shops = FirebaseDatabase.getInstance().getReference("Shops");
+                    shops.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snp1:dataSnapshot.getChildren()){
+                                for(DataSnapshot snp2:snp1.getChildren()){
+                                    MyShops msp=snp2.getValue(MyShops.class);
+                                    if (off.getShopname().equals(msp.getShopname())) {
+                                        off.setShoplogourl(msp.getLogourl());
+                                        offersfinal.add(off);
+                                    }
+                                }
+                            }
+                            adapter.loadMyOffers(offersfinal);
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

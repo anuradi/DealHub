@@ -140,7 +140,6 @@ public class Profile_ShopOwner extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("************************ Inside profile");
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (result != null) {

@@ -162,7 +162,7 @@ public class AddShops_ShopOwner extends Fragment {
         return view;
     }
 
-    private void addShop(final String shop_name, final String shop_address, final String shop_brno, String shop_email, final String shop_contact, final String shop_ownernic) {
+    private void addShop(final String shop_name, final String shop_address, final String shop_brno, final String shop_email, final String shop_contact, final String shop_ownernic) {
         pd = new ProgressDialog(getActivity());
         pd.setMessage("Adding your Shop");
         pd.show();
@@ -186,7 +186,7 @@ public class AddShops_ShopOwner extends Fragment {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("shopid", shopid);
                 hashMap.put("shopname", shop_name);
-                hashMap.put("shopbrno", shop_brno);
+                hashMap.put("shopbrno", shop_email);
                 hashMap.put("address", shop_address);
                 hashMap.put("email", shop_brno);
                 hashMap.put("contactno", shop_contact);

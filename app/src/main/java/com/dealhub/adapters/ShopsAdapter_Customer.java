@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dealhub.R;
 import com.dealhub.models.MyShops;
+import com.dealhub.notifications.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -73,6 +75,7 @@ public class ShopsAdapter_Customer extends RecyclerView.Adapter<ShopsAdapter_Cus
                         public void onClick(View view) {
                             databaseReference.child(firebaseUser.getUid()).child("Following").child(shp.getShopname()).setValue(true);
                             holder.subscribe.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.unsub));
+                            updateToken(FirebaseInstanceId.getInstance().getToken());
                         }
                     });
                 }else{
@@ -116,5 +119,11 @@ public class ShopsAdapter_Customer extends RecyclerView.Adapter<ShopsAdapter_Cus
             shopaddress=itemView.findViewById(R.id.shop_address);
             subscribe=itemView.findViewById(R.id.subcribe);
         }
+    }
+
+    private void updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(firebaseUser.getUid()).setValue(token1);
     }
 }
