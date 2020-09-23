@@ -46,14 +46,8 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-
-        if (isNetworkConnected()) {
-            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (firebaseUser != null && firebaseUser.isEmailVerified()) {
-                redirectToHome();
-            } else {
-                setContentView(R.layout.activity_login);
                 email = findViewById(R.id.email);
                 password = findViewById(R.id.password);
                 signup = findViewById(R.id.txt_signup);
@@ -105,14 +99,11 @@ public class Login extends AppCompatActivity {
 
                     }
                 });
-            }
-        } else {
-            Toast.makeText(Login.this, "No Network Connection. Check Your Connection", Toast.LENGTH_SHORT).show();
-            finish();
+
         }
 
 
-    }
+
 
     private void redirectToHome() {
         DatabaseReference reference;
