@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Get_Coupon">
+    tools:context=".activity.Get_Coupon">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/gtCp"
+        android:textColor="#C15AF4"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,12 +20,12 @@
         app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView5"
-        android:layout_width="333dp"
-        android:layout_height="364dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/em1"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -32,24 +34,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.386" />
+        app:layout_constraintVertical_bias="0.20999998" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/textView6"
-        android:layout_width="261dp"
-        android:layout_height="51dp"
-        android:background="#F1EDED"
-        android:text="@string/mailSpc"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_boader_dark"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.291" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button7"
-        android:layout_width="171dp"
-        android:layout_height="63dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_margin="72dp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:textSize="24dp"
         android:text="@string/coupBtn2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
