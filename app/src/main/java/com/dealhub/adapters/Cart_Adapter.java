@@ -11,6 +11,6 @@ public class Cart_Adapter extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart__adapter);
+        setContentView(R.layout.activity_cart_adapter);
     }
 }

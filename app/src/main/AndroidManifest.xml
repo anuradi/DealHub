@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".adapters.Cart_Adapter"></activity>
+        <activity android:name=".adapters.Coupon_Adapter"></activity>
+        <activity android:name=".activity.my_coupon" />
+        <activity android:name=".adapters.Cart_Adapter" />
         <activity android:name=".activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +27,7 @@
         <activity android:name=".activity.RegisterCustomer" />
         <activity android:name=".activity.Edit_Offers" />
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.Login"></activity>
+        <activity android:name=".activity.Login" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
