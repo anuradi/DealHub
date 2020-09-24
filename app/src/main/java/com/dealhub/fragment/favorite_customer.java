@@ -98,8 +98,7 @@ public class favorite_customer extends Fragment {
                     for (DataSnapshot snap2 : snap1.getChildren()) {
                         final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
                         for (Favourites fav:favouritelist){
-                            if (offers_shopOwner.getShopname().equals(fav.getShopname())) {
-                                System.out.println(snap2.getValue());
+                            if (offers_shopOwner.getShopname().equals(fav.getShopname()) && fav.getOfferid().equals(String.valueOf(offers_shopOwner.getOfferid()))) {
                                 offers.add(offers_shopOwner);
                             }
                         }

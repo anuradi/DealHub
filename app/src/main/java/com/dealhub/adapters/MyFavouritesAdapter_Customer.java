@@ -200,7 +200,7 @@ public class MyFavouritesAdapter_Customer extends RecyclerView.Adapter<MyFavouri
         });
 
 
-        DatabaseReference favourites = FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname());
+        DatabaseReference favourites = FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child(""+ofr.getOfferid());
         favourites.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
