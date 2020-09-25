@@ -3,6 +3,7 @@ package com.dealhub.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -37,13 +39,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class CompoundDialog extends DialogFragment {
     FirebaseUser firebaseUser;
     DatabaseReference userReference;
     DatabaseReference databaseReference;
-    AppCompatEditText phoneNumber;
-    AppCompatButton getcoupen;
+    AppCompatEditText phoneNumber, verifynumber;
+    AppCompatButton getcoupen, verify;
+    AppCompatTextView timer, timertext, resendtext,mainhead;
 
 
     private FirebaseAuth mAuth;
@@ -53,34 +57,57 @@ public class CompoundDialog extends DialogFragment {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            getDialog().setCanceledOnTouchOutside(false);
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         View view = LayoutInflater.from(getContext()).inflate(R.layout.activity_get_coupon, null);
-        getcoupen=view.findViewById(R.id.getcoupen);
-        phoneNumber=view.findViewById(R.id.phonenumber);
+        getcoupen = view.findViewById(R.id.getcoupen);
+        phoneNumber = view.findViewById(R.id.phonenumber);
+        verifynumber = view.findViewById(R.id.verifynumber);
+        verify = view.findViewById(R.id.verify);
+        timer = view.findViewById(R.id.timer);
+        timertext = view.findViewById(R.id.timerText);
+        resendtext = view.findViewById(R.id.resendtext);
+        mainhead = view.findViewById(R.id.textView5);
 
         Bundle bundle = getArguments();
         final String offer = bundle.getString("offer");
         final String shopname = bundle.getString("shopname");
         final String login = bundle.getString("login");
         alert.setView(view);
-        init();
 
         final AlertDialog alertDialog = alert.create();
 
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (login.equals("shopowner")){
+        if (login.equals("shopowner")) {
             userReference = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
-        }else if(login.equals("customer")){
+        } else if (login.equals("customer")) {
             userReference = FirebaseDatabase.getInstance().getReference("Customers").child(firebaseUser.getUid());
         }
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Comments").child(shopname).child(offer);
 
+//start the process of phone verify
+        init();
 
+        getcoupen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupVerifyPhoneNumber(phoneNumber.getText().toString());
+            }
+        });
 
         return alertDialog;
     }
@@ -91,17 +118,23 @@ public class CompoundDialog extends DialogFragment {
         setupCallbacks();
         // [END phone_auth_callbacks]
 
-//        setupVerifyPhoneNumber();
-//        getcoupen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String verify_code=no1.getText().toString()+""+no2.getText().toString()+""+no3.getText().toString()+""+no4.getText().toString()+""+no5.getText().toString()+""+no6.getText().toString();
-//                // [START verify_with_code]
-//                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verify_code);
-//                // [END verify_with_code]
-//                signInWithPhoneAuthCredential(credential);
-//            }
-//        });
+
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
+
+
+        getcoupen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String verify_code = verifynumber.getText().toString();
+                // [START verify_with_code]
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verify_code);
+                // [END verify_with_code]
+                System.out.println("*************" + credential.getSmsCode());
+            }
+        });
     }
 
     private void setupCallbacks() {
@@ -132,7 +165,7 @@ public class CompoundDialog extends DialogFragment {
             public void onVerificationFailed(FirebaseException e) {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
-                Log.w("TAG", "onVerificationFailed", e);
+                Log.d("TAG", "onVerificationFailed", e);
                 // [START_EXCLUDE silent]
                 mVerificationInProgress = false;
                 // [END_EXCLUDE]
@@ -170,9 +203,56 @@ public class CompoundDialog extends DialogFragment {
 
                 // [START_EXCLUDE]
                 // Update UI
-//                updateUI(STATE_CODE_SENT);
+                setupTimer();
                 // [END_EXCLUDE]
             }
         };
+    }
+
+
+    // [START start_phone_auth]
+    private void setupVerifyPhoneNumber(String mobile) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+94" + mobile,
+                2,
+                TimeUnit.MINUTES,
+                getActivity(),
+                mCallbacks);
+
+        mVerificationInProgress = true;
+    }
+    // [END start_phone_auth]
+
+    private void setupTimer() {
+        mainhead.setVisibility(View.GONE);
+        phoneNumber.setVisibility(View.GONE);
+        getcoupen.setVisibility(View.GONE);
+        timertext.setVisibility(View.VISIBLE);
+        timer.setVisibility(View.VISIBLE);
+        verify.setVisibility(View.VISIBLE);
+
+        new CountDownTimer(30000, 1000) {
+            public void onTick(final long millisUntilFinished) {
+                timertext.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        timertext.setText("Seconds remaining: " + millisUntilFinished / 1000);
+                    }
+                });
+            }
+
+            public void onFinish() {
+                timertext.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        resendtext.setVisibility(View.VISIBLE);
+                        timertext.setVisibility(View.GONE);
+                        timer.setText("Now you can request code again");
+                        timer.setVisibility(View.GONE);
+
+                    }
+                });
+            }
+        }.start();
     }
 }

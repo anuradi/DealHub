@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.dealhub.R;
 import com.dealhub.activity.Login;
@@ -25,10 +26,12 @@ public class SampleDialog extends DialogFragment {
     DatabaseReference databaseReferenceoffer;
     DatabaseReference databaseReferencecmnt;
     FirebaseUser firebaseUser;
+    TextView txt;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_logout_cofirmation, container, false);
+
     }
 
     @Override
@@ -40,7 +43,11 @@ public class SampleDialog extends DialogFragment {
             getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             getDialog().setCanceledOnTouchOutside(false);
         }
+
+        txt=view.findViewById(R.id.txtDialogMessage);
         if (offer.equals("")) {
+
+            txt.setText("Are you sure want to log out");
             Button btnOk = view.findViewById(R.id.btnOk);
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override

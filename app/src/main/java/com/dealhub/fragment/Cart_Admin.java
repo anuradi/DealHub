@@ -64,7 +64,7 @@ public class Cart_Admin extends Fragment {
         adapter = new Cart_Adapter(getActivity(), fragmentManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cartReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        cartReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 cartlist.clear();

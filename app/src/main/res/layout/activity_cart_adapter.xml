@@ -133,7 +133,7 @@
         android:layout_margin="10dp"
         android:layout_toStartOf="@+id/delete"
         android:background="#65E612"
-        android:text="Get Compound"
+        android:text="Get Coupen"
         android:textColor="@color/colorWhite"
         android:textStyle="bold" />
 </androidx.appcompat.widget.LinearLayoutCompat>

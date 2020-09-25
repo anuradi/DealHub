@@ -39,7 +39,7 @@
                     android:background="@drawable/button_boader_dark"
                     android:gravity="center_vertical"
                     android:padding="8dp"
-                    android:text="My Compounds"
+                    android:text="My Coupens"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
 
