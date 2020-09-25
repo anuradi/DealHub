@@ -100,7 +100,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                 cmntDialog.show(fragmentManager, "comment_dialog");
             }
         });
-        DatabaseReference following = FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child(""+ofr.getOfferid());
+        DatabaseReference following = FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child(ofr.getShopname()).child(""+ofr.getOfferid());
         following.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,7 +109,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                     holder.like.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(true);
+                            FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(true);
                             holder.like.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.like_red));
                             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -146,7 +146,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                     holder.like.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(null);
+                            FirebaseDatabase.getInstance().getReference().child("Likes").child(firebaseUser.getUid()).child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(null);
                             holder.like.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.like_gray));
                             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -201,7 +201,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
         });
 
 
-        DatabaseReference favourites = FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child(""+ofr.getOfferid());
+        DatabaseReference favourites = FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child(ofr.getShopname()).child(""+ofr.getOfferid());
         favourites.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -210,7 +210,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                     holder.save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(true);
+                            FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(true);
                             holder.save.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.favorite_star));
                         }
                     });
@@ -219,7 +219,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                     holder.save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child("Following").child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(null);
+                            FirebaseDatabase.getInstance().getReference().child("Favourites").child(firebaseUser.getUid()).child(ofr.getShopname()).child("" + ofr.getOfferid()).setValue(null);
                             holder.save.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_favorite_gray));
                         }
                     });

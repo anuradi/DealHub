@@ -50,7 +50,7 @@ public class favorite_customer extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        favouriteReference = FirebaseDatabase.getInstance().getReference("Favourites");
+        favouriteReference = FirebaseDatabase.getInstance().getReference("Favourites").child(firebaseUser.getUid());
         offerReference = FirebaseDatabase.getInstance().getReference("Offers");
         offers = new ArrayList<>();
         offersfinal = new ArrayList<>();
@@ -64,18 +64,13 @@ public class favorite_customer extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 favouritelist.clear();
-                for (DataSnapshot snap1:dataSnapshot.getChildren()){
-                    for (DataSnapshot snap2:snap1.getChildren()){
-
-                        for (DataSnapshot snap3:snap2.getChildren()){
-                            Favourites fav=new Favourites();
-                            fav.setShopname(snap3.getKey());
-                            for (DataSnapshot snap4:snap3.getChildren()){
-                                fav.setOfferid(snap4.getKey());
-                                favouritelist.add(fav);
-                            }
+                for (DataSnapshot snap1 : dataSnapshot.getChildren()) {
+                        for (DataSnapshot snap2 : snap1.getChildren()) {
+                            Favourites fav = new Favourites();
+                            fav.setShopname(snap1.getKey());
+                            fav.setOfferid(Integer.parseInt(snap2.getKey()));
+                            favouritelist.add(fav);
                         }
-                    }
                 }
                 showFavourites();
             }
@@ -97,18 +92,19 @@ public class favorite_customer extends Fragment {
                 for (DataSnapshot snap1 : dataSnapshot.getChildren()) {
                     for (DataSnapshot snap2 : snap1.getChildren()) {
                         final MyOffers offers_shopOwner = snap2.getValue(MyOffers.class);
-                        for (Favourites fav:favouritelist){
-                            if (offers_shopOwner.getShopname().equals(fav.getShopname()) && fav.getOfferid().equals(String.valueOf(offers_shopOwner.getOfferid()))) {
+                        for (Favourites fav : favouritelist) {
+                            if (offers_shopOwner.getShopname().equals(fav.getShopname()) && fav.getOfferid()==offers_shopOwner.getOfferid()) {
                                 offers.add(offers_shopOwner);
                             }
                         }
 
                     }
                 }
+
                 for (final MyOffers off:offers){
                     offersfinal.clear();
                     DatabaseReference shops = FirebaseDatabase.getInstance().getReference("Shops");
-                    shops.addValueEventListener(new ValueEventListener() {
+                    shops.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot snp1:dataSnapshot.getChildren()){
@@ -116,7 +112,15 @@ public class favorite_customer extends Fragment {
                                     MyShops msp=snp2.getValue(MyShops.class);
                                     if (off.getShopname().equals(msp.getShopname())) {
                                         off.setShoplogourl(msp.getLogourl());
-                                        offersfinal.add(off);
+                                        boolean exist=false;
+                                        for(MyOffers finalo:offersfinal){
+                                            if (finalo.getOfferid()==off.getOfferid()){
+                                                exist=true;
+                                            }
+                                        }
+                                        if (!exist){
+                                            offersfinal.add(off);
+                                        }
                                     }
                                 }
                             }
