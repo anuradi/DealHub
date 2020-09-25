@@ -113,16 +113,18 @@ public class CompoundDialog extends DialogFragment {
     }
 
     private void init() {
-        // Initialize phone auth callbacks
-        // [START phone_auth_callbacks]
-        setupCallbacks();
-        // [END phone_auth_callbacks]
-
 
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+
+
+        // Initialize phone auth callbacks
+        // [START phone_auth_callbacks]
+        setupCallbacks();
+        // [END phone_auth_callbacks]
 
 
         getcoupen.setOnClickListener(new View.OnClickListener() {
@@ -230,6 +232,7 @@ public class CompoundDialog extends DialogFragment {
         timertext.setVisibility(View.VISIBLE);
         timer.setVisibility(View.VISIBLE);
         verify.setVisibility(View.VISIBLE);
+        verifynumber.setVisibility(View.VISIBLE);
 
         new CountDownTimer(30000, 1000) {
             public void onTick(final long millisUntilFinished) {
