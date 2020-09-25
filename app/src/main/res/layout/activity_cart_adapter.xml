@@ -127,7 +127,7 @@
         android:textColor="@color/colorBlack"
         android:textStyle="normal" />
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/edit"
+        android:id="@+id/compound"
         android:layout_width="200dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"

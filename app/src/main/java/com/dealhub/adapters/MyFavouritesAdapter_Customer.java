@@ -235,7 +235,22 @@ public class MyFavouritesAdapter_Customer extends RecyclerView.Adapter<MyFavouri
         holder.addtocart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Add to cart", Toast.LENGTH_SHORT).show();
+                final DatabaseReference cart = FirebaseDatabase.getInstance().getReference().child("Cart").child(firebaseUser.getUid()).child(ofr.getShopname()).child("" + ofr.getOfferid());
+                cart.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue()==null){
+                            cart.child("count").setValue(1);
+                        }else{
+                            Toast.makeText(context, "This offer is already in the cart", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
     }

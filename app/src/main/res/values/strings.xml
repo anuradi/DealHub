@@ -37,7 +37,7 @@
     <string name="Del1">Delete</string>
     <string name="Del2">Delete</string>
     <string name="gtCp">Get Coupon</string>
-    <string name="em1">Enter Your e-mail</string>
+    <string name="em1">Enter Your Phone Number</string>
     <string name="mailSpc"></string>
     <string name="coupBtn2">Get Coupon</string>
     <string name="COff">Collect Offer</string>
@@ -72,4 +72,5 @@
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="log_out">Log Out</string>
+    <string name="verify">Verify</string>
 </resources>
