@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,21 +58,14 @@ public class CompoundDialog extends DialogFragment {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
 
+    @Nullable
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            getDialog().setCanceledOnTouchOutside(false);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_get_coupon, container, false);
     }
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.activity_get_coupon, null);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         getcoupen = view.findViewById(R.id.getcoupen);
         phoneNumber = view.findViewById(R.id.phonenumber);
         verifynumber = view.findViewById(R.id.verifynumber);
@@ -85,10 +79,10 @@ public class CompoundDialog extends DialogFragment {
         final String offer = bundle.getString("offer");
         final String shopname = bundle.getString("shopname");
         final String login = bundle.getString("login");
-        alert.setView(view);
 
-        final AlertDialog alertDialog = alert.create();
-
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().setCanceledOnTouchOutside(false);
+        }
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (login.equals("shopowner")) {
@@ -108,9 +102,60 @@ public class CompoundDialog extends DialogFragment {
                 setupVerifyPhoneNumber(phoneNumber.getText().toString());
             }
         });
-
-        return alertDialog;
     }
+
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//
+//
+//        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+//        View view = LayoutInflater.from(getContext()).inflate(R.layout.activity_get_coupon, null);
+//        getcoupen = view.findViewById(R.id.getcoupen);
+//        phoneNumber = view.findViewById(R.id.phonenumber);
+//        verifynumber = view.findViewById(R.id.verifynumber);
+//        verify = view.findViewById(R.id.verify);
+//        timer = view.findViewById(R.id.timer);
+//        timertext = view.findViewById(R.id.timerText);
+//        resendtext = view.findViewById(R.id.resendtext);
+//        mainhead = view.findViewById(R.id.textView5);
+//
+//        Bundle bundle = getArguments();
+//        final String offer = bundle.getString("offer");
+//        final String shopname = bundle.getString("shopname");
+//        final String login = bundle.getString("login");
+//        alert.setView(view);
+//
+//        final AlertDialog alertDialog = alert.create();
+//        System.out.println(getDialog());
+//        System.out.println(getDialog().getWindow());
+//        if (getDialog() != null && getDialog().getWindow() != null) {
+//            System.out.println("%%%%%");
+//            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//            getDialog().setCanceledOnTouchOutside(false);
+//        }
+//
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        if (login.equals("shopowner")) {
+//            userReference = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
+//        } else if (login.equals("customer")) {
+//            userReference = FirebaseDatabase.getInstance().getReference("Customers").child(firebaseUser.getUid());
+//        }
+//
+//        databaseReference = FirebaseDatabase.getInstance().getReference("Comments").child(shopname).child(offer);
+//
+////start the process of phone verify
+//        init();
+//
+//        getcoupen.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                setupVerifyPhoneNumber(phoneNumber.getText().toString());
+//            }
+//        });
+//
+//        return alertDialog;
+//    }
 
     private void init() {
 

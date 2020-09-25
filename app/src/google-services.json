@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1062162829858-v1jgnrustimq5bjp1csdjn8uevbbn1v9.apps.googleusercontent.com",
+          "client_id": "1062162829858-cvi83g8sp5mnudksnvdl9vp8o4segvkr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.dealhub",
-            "certificate_hash": "fd38067cf29ce7eff0d80c67d78d3676ad81e551"
+            "certificate_hash": "189e73c37d75f519203599b51d879ebcc0326246"
           }
         },
         {
