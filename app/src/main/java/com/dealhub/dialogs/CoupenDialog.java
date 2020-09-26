@@ -2,6 +2,7 @@ package com.dealhub.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,17 +40,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class CompoundDialog extends DialogFragment {
+public class CoupenDialog extends DialogFragment {
     FirebaseUser firebaseUser;
     DatabaseReference userReference;
     DatabaseReference databaseReference;
-    AppCompatEditText phoneNumber, verifynumber;
-    AppCompatButton getcoupen, verify;
-    AppCompatTextView timer, timertext, resendtext,mainhead;
+    AppCompatEditText phoneNumber;
+    AppCompatButton getcoupen;
 
 
     private FirebaseAuth mAuth;
@@ -57,81 +60,28 @@ public class CompoundDialog extends DialogFragment {
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
+    String phonenum;
+    String count;
+    AlertDialog alertDialog;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_get_coupon, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        getcoupen = view.findViewById(R.id.getcoupen);
-        phoneNumber = view.findViewById(R.id.phonenumber);
-        verifynumber = view.findViewById(R.id.verifynumber);
-        verify = view.findViewById(R.id.verify);
-        timer = view.findViewById(R.id.timer);
-        timertext = view.findViewById(R.id.timerText);
-        resendtext = view.findViewById(R.id.resendtext);
-        mainhead = view.findViewById(R.id.textView5);
-
-        Bundle bundle = getArguments();
-        final String offer = bundle.getString("offer");
-        final String shopname = bundle.getString("shopname");
-        final String login = bundle.getString("login");
-
-        if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().setCanceledOnTouchOutside(false);
-        }
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (login.equals("shopowner")) {
-            userReference = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
-        } else if (login.equals("customer")) {
-            userReference = FirebaseDatabase.getInstance().getReference("Customers").child(firebaseUser.getUid());
-        }
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Comments").child(shopname).child(offer);
-
-//start the process of phone verify
-        init();
-
-        getcoupen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setupVerifyPhoneNumber(phoneNumber.getText().toString());
-            }
-        });
-    }
-
-//    @NonNull
+//    @Nullable
 //    @Override
-//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        return inflater.inflate(R.layout.activity_get_coupon, container, false);
+//    }
 //
-//
-//        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-//        View view = LayoutInflater.from(getContext()).inflate(R.layout.activity_get_coupon, null);
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 //        getcoupen = view.findViewById(R.id.getcoupen);
 //        phoneNumber = view.findViewById(R.id.phonenumber);
-//        verifynumber = view.findViewById(R.id.verifynumber);
-//        verify = view.findViewById(R.id.verify);
-//        timer = view.findViewById(R.id.timer);
-//        timertext = view.findViewById(R.id.timerText);
-//        resendtext = view.findViewById(R.id.resendtext);
-//        mainhead = view.findViewById(R.id.textView5);
 //
 //        Bundle bundle = getArguments();
 //        final String offer = bundle.getString("offer");
 //        final String shopname = bundle.getString("shopname");
 //        final String login = bundle.getString("login");
-//        alert.setView(view);
+//        count = bundle.getString("count");
 //
-//        final AlertDialog alertDialog = alert.create();
-//        System.out.println(getDialog());
-//        System.out.println(getDialog().getWindow());
 //        if (getDialog() != null && getDialog().getWindow() != null) {
-//            System.out.println("%%%%%");
-//            getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 //            getDialog().setCanceledOnTouchOutside(false);
 //        }
 //
@@ -142,20 +92,46 @@ public class CompoundDialog extends DialogFragment {
 //            userReference = FirebaseDatabase.getInstance().getReference("Customers").child(firebaseUser.getUid());
 //        }
 //
-//        databaseReference = FirebaseDatabase.getInstance().getReference("Comments").child(shopname).child(offer);
+//        databaseReference = FirebaseDatabase.getInstance().getReference("Coupens").child(firebaseUser.getUid()).child(shopname).child(offer);
 //
 ////start the process of phone verify
 //        init();
 //
-//        getcoupen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                setupVerifyPhoneNumber(phoneNumber.getText().toString());
-//            }
-//        });
 //
-//        return alertDialog;
 //    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.activity_get_coupon, null);
+        getcoupen = view.findViewById(R.id.getcoupen);
+        phoneNumber = view.findViewById(R.id.phonenumber);
+
+        Bundle bundle = getArguments();
+        final String offer = bundle.getString("offer");
+        final String shopname = bundle.getString("shopname");
+        final String login = bundle.getString("login");
+        count = bundle.getString("count");
+        alert.setView(view);
+
+        alertDialog = alert.create();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (login.equals("shopowner")) {
+            userReference = FirebaseDatabase.getInstance().getReference("Shop Owners").child(firebaseUser.getUid());
+        } else if (login.equals("customer")) {
+            userReference = FirebaseDatabase.getInstance().getReference("Customers").child(firebaseUser.getUid());
+        }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Coupens").child(firebaseUser.getUid()).child(shopname).child(offer);
+
+//start the process of phone verify
+        init();
+
+        return alertDialog;
+    }
 
     private void init() {
 
@@ -165,23 +141,20 @@ public class CompoundDialog extends DialogFragment {
         // [END initialize_auth]
 
 
-
         // Initialize phone auth callbacks
         // [START phone_auth_callbacks]
         setupCallbacks();
         // [END phone_auth_callbacks]
 
-
         getcoupen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String verify_code = verifynumber.getText().toString();
-                // [START verify_with_code]
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verify_code);
-                // [END verify_with_code]
-                System.out.println("*************" + credential.getSmsCode());
+                phonenum = phoneNumber.getText().toString();
+                setupVerifyPhoneNumber(phonenum);
             }
         });
+
+
     }
 
     private void setupCallbacks() {
@@ -248,10 +221,16 @@ public class CompoundDialog extends DialogFragment {
                 mVerificationId = verificationId;
                 mResendToken = token;
 
-                // [START_EXCLUDE]
-                // Update UI
-                setupTimer();
-                // [END_EXCLUDE]
+                String crrdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("crrdate", crrdate);
+                hashMap.put("phone", phonenum);
+                hashMap.put("count", count);
+                databaseReference.setValue(hashMap);
+                Toast.makeText(getActivity(), "Coupen code sent", Toast.LENGTH_SHORT).show();
+                if (getDialog() != null) {
+                    getDialog().dismiss();
+                }
             }
         };
     }
@@ -261,8 +240,8 @@ public class CompoundDialog extends DialogFragment {
     private void setupVerifyPhoneNumber(String mobile) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+94" + mobile,
-                2,
-                TimeUnit.MINUTES,
+                30,
+                TimeUnit.SECONDS,
                 getActivity(),
                 mCallbacks);
 
@@ -270,37 +249,5 @@ public class CompoundDialog extends DialogFragment {
     }
     // [END start_phone_auth]
 
-    private void setupTimer() {
-        mainhead.setVisibility(View.GONE);
-        phoneNumber.setVisibility(View.GONE);
-        getcoupen.setVisibility(View.GONE);
-        timertext.setVisibility(View.VISIBLE);
-        timer.setVisibility(View.VISIBLE);
-        verify.setVisibility(View.VISIBLE);
-        verifynumber.setVisibility(View.VISIBLE);
 
-        new CountDownTimer(30000, 1000) {
-            public void onTick(final long millisUntilFinished) {
-                timertext.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        timertext.setText("Seconds remaining: " + millisUntilFinished / 1000);
-                    }
-                });
-            }
-
-            public void onFinish() {
-                timertext.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        resendtext.setVisibility(View.VISIBLE);
-                        timertext.setVisibility(View.GONE);
-                        timer.setText("Now you can request code again");
-                        timer.setVisibility(View.GONE);
-
-                    }
-                });
-            }
-        }.start();
-    }
 }

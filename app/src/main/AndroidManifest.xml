@@ -11,9 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".adapters.Coupon_Adapter"></activity>
-        <activity android:name=".activity.my_coupon" />
-        <activity android:name=".adapters.Cart_Adapter" />
+        <activity android:name=".activity.my_coupen" />
         <activity android:name=".activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

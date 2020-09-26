@@ -6,7 +6,7 @@
     android:layout_margin="8dp"
     android:orientation="vertical"
     android:background="@drawable/button_boader_dark"
-    tools:context=".adapters.Coupon_Adapter">
+    tools:context=".adapters.Coupen_Adapter">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/coup_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -43,6 +44,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/coup_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -60,16 +62,17 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:layout_alignParentStart="true"
-            android:text="Coupon Code"
+            android:text="Shop Name"
             android:textColor="@color/colorBlack" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/coup_shopname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:layout_alignParentEnd="true"
-            android:text="851456"
+            android:text="buruvage kade"
             android:textStyle="bold"
             android:textColor="#DD2C00" />
 
@@ -87,6 +90,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/coupen_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -109,6 +113,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/coup_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"

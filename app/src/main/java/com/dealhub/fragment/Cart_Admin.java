@@ -1,5 +1,6 @@
 package com.dealhub.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.dealhub.R;
+import com.dealhub.activity.my_coupen;
 import com.dealhub.adapters.Cart_Adapter;
 import com.dealhub.adapters.OffersAdapter_Customer;
 import com.dealhub.models.Favourites;
@@ -37,6 +40,7 @@ public class Cart_Admin extends Fragment {
     ArrayList<MyOffers> offers;
     ArrayList<MyOffers> offersfinal;
     ArrayList<MyCart> cartlist;
+    TextView mycoupen;
 
     FirebaseUser firebaseUser;
     DatabaseReference cartReference;
@@ -58,6 +62,14 @@ public class Cart_Admin extends Fragment {
         offers = new ArrayList<>();
         offersfinal = new ArrayList<>();
         cartlist = new ArrayList<>();
+
+        mycoupen=view.findViewById(R.id.Compound);
+        mycoupen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().startActivity(new Intent(getActivity(), my_coupen.class));
+            }
+        });
 
         RecyclerView recyclerView = view.findViewById(R.id.cartdata);
         FragmentManager fragmentManager = getFragmentManager();

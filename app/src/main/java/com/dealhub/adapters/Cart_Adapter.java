@@ -1,7 +1,6 @@
 package com.dealhub.adapters;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -17,9 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dealhub.R;
-import com.dealhub.dialogs.CommentDialog;
-import com.dealhub.dialogs.CompoundDialog;
-import com.dealhub.models.MyCart;
+import com.dealhub.dialogs.CoupenDialog;
 import com.dealhub.models.MyOffers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -118,7 +115,8 @@ public class Cart_Adapter extends RecyclerView.Adapter<Cart_Adapter.ViewHolder> 
                 bundle.putString("offer", "" + ofr.getOfferid());
                 bundle.putString("shopname", "" + ofr.getShopname());
                 bundle.putString("login", "" + "customer");
-                CompoundDialog cmntDialog = new CompoundDialog();
+                bundle.putString("count", "" +holder.count.getText().toString());
+                CoupenDialog cmntDialog = new CoupenDialog();
                 cmntDialog.setArguments(bundle);
                 cmntDialog.show(fragmentManager, "comment_dialog");
             }

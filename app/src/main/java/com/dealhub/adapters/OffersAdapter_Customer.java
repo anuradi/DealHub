@@ -242,6 +242,7 @@ public class OffersAdapter_Customer extends RecyclerView.Adapter<OffersAdapter_C
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue()==null){
                             cart.child("count").setValue(1);
+                            Toast.makeText(context, "Offer added to cart successfully", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(context, "This offer is already in the cart", Toast.LENGTH_SHORT).show();
                         }
