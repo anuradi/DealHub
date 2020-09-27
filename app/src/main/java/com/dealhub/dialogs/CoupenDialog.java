@@ -226,7 +226,7 @@ public class CoupenDialog extends DialogFragment {
                 hashMap.put("crrdate", crrdate);
                 hashMap.put("phone", phonenum);
                 hashMap.put("count", count);
-                databaseReference.setValue(hashMap);
+                databaseReference.push().setValue(hashMap);
                 Toast.makeText(getActivity(), "Coupen code sent", Toast.LENGTH_SHORT).show();
                 if (getDialog() != null) {
                     getDialog().dismiss();
@@ -240,8 +240,8 @@ public class CoupenDialog extends DialogFragment {
     private void setupVerifyPhoneNumber(String mobile) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+94" + mobile,
-                30,
-                TimeUnit.SECONDS,
+                2,
+                TimeUnit.MINUTES,
                 getActivity(),
                 mCallbacks);
 
