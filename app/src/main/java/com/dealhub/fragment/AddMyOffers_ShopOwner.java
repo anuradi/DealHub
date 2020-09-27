@@ -363,7 +363,6 @@ public class AddMyOffers_ShopOwner extends Fragment {
                 case OFFERIMAGE:
                     URIofferimg = data.getData();
                     offerimg.setImageURI(URIofferimg);
-                    //Toast.makeText(DriverPersonalDocument.this, "" + URIinsurance, Toast.LENGTH_SHORT).show();
                     break;
 
             }

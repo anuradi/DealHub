@@ -1,67 +1,97 @@
-package com.dealhub.fragment;
+package com.dealhub.dialogs;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import androidx.fragment.app.DialogFragment;
 
 import com.dealhub.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
+public class UpdateNotificationDialog extends DialogFragment {
 
-public class AddNotification extends Fragment {
-
-    AppCompatImageView notification_image;
-    AppCompatEditText description;
-    AppCompatButton send;
+    AppCompatImageView image;
+    AppCompatEditText desciption;
+    AppCompatButton update;
     private static final int NOTIFICATIONIMAGE = 102;
     private Uri URInotificationimg;
     ProgressDialog pd;
     DatabaseReference databaseReference;
     StorageReference storageReference;
     private StorageTask uplaodTask;
-
+    
+    @NonNull
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_update__notification, null);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_notification, container, false);
-        notification_image=view.findViewById(R.id.pro_pic);
-        description=view.findViewById(R.id.description);
-        send=view.findViewById(R.id.post);
+        image=view.findViewById(R.id.pro_pic);
+        desciption=view.findViewById(R.id.description);
+        update=view.findViewById(R.id.post);
+
 
         storageReference = FirebaseStorage.getInstance().getReference("Shop Notitfications");
         databaseReference = FirebaseDatabase.getInstance().getReference("Shop Notitfications");
-
-        notification_image.setOnClickListener(new View.OnClickListener() {
+        
+        Bundle bundle = getArguments();
+        final String img_url = bundle.getString("img_url");
+        final String str_description = bundle.getString("description");
+        final String id = bundle.getString("id");
+        alert.setView(view);
+        final AlertDialog alertDialog = alert.create();
+        Picasso.get().load(img_url).into(image);
+        desciption.setText(str_description);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String str_description=desciption.getText().toString();
+                if (str_description.isEmpty()){
+                    Toast.makeText(getActivity(), "Can't update without description", Toast.LENGTH_SHORT).show();
+                }else{
+                    pd = new ProgressDialog(getActivity());
+                    pd.setMessage("Updating your notification");
+                    pd.show();
+                    pd.setCanceledOnTouchOutside(false);
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("description", str_description);
+                    hashMap.put("id", id);
+                    databaseReference.child(id).updateChildren(hashMap);
+                    if (URInotificationimg!=null){
+                        uploadImage(id,alertDialog);
+                    }else{
+                        pd.dismiss();
+                        Toast.makeText(getActivity(), "Notification Updated Successfully", Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                }
+            }
+        });
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -72,33 +102,10 @@ public class AddNotification extends Fragment {
             }
         });
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String str_description=description.getText().toString();
-                if (str_description.isEmpty()){
-                    Toast.makeText(getActivity(), "Desciption cannot be empty", Toast.LENGTH_SHORT).show();
-                }else if(URInotificationimg==null){
-                    Toast.makeText(getActivity(), "Image is required", Toast.LENGTH_SHORT).show();
-                }else{
-                    pd = new ProgressDialog(getActivity());
-                    pd.setMessage("Adding your notification");
-                    pd.show();
-                    pd.setCanceledOnTouchOutside(false);
-                    String key = databaseReference.push().getKey();
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("description", str_description);
-                    hashMap.put("id", key);
-                    databaseReference.child(key).setValue(hashMap);
-                    uploadImage(key);
-                }
-            }
-        });
-
-        return view;
+        return alertDialog;
     }
 
-    private void uploadImage(final String key) {
+    private void uploadImage(final String key, final AlertDialog alertDialog) {
         final StorageReference filerefrenceoffer = storageReference.child("" + key).child("notificationimg.jpg");
         uplaodTask = filerefrenceoffer.putFile(URInotificationimg);
 
@@ -127,8 +134,8 @@ public class AddNotification extends Fragment {
 
                     reference.updateChildren(hashMap);
                     pd.dismiss();
-                    Toast.makeText(getActivity(), "Notification Added Successfully", Toast.LENGTH_SHORT).show();
-                    clearFields();
+                    Toast.makeText(getActivity(), "Notification Updated Successfully", Toast.LENGTH_SHORT).show();
+                    alertDialog.dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Failed to upload offer image", Toast.LENGTH_SHORT).show();
                 }
@@ -142,12 +149,6 @@ public class AddNotification extends Fragment {
         });
     }
 
-    private void clearFields() {
-        URInotificationimg=null;
-        notification_image.setBackgroundResource(R.drawable.add);
-        notification_image.setImageResource(R.drawable.button_black);
-        description.setText("");
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -156,7 +157,7 @@ public class AddNotification extends Fragment {
             switch (requestCode) {
                 case NOTIFICATIONIMAGE:
                     URInotificationimg = data.getData();
-                    notification_image.setImageURI(URInotificationimg);
+                    image.setImageURI(URInotificationimg);
                     break;
 
             }

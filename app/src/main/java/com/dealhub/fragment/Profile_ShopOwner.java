@@ -126,6 +126,7 @@ public class Profile_ShopOwner extends Fragment {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("logout", "logout");
                                 bundle.putString("offer", "");
+                                bundle.putString("notification", "");
                                 SampleDialog smpDialog = new SampleDialog();
                                 smpDialog.setArguments(bundle);
                                 smpDialog.show(getFragmentManager(), "sure_dialog");

@@ -130,6 +130,7 @@ public class MyOffersAdapter_ShopOwner extends RecyclerView.Adapter<MyOffersAdap
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putString("offer", "" + ms.getOfferid());
+                bundle.putString("notification", "");
                 SampleDialog smpDialog = new SampleDialog();
                 smpDialog.setArguments(bundle);
                 smpDialog.show(fragmentManager, "sure_dialog");

@@ -75,26 +75,31 @@ public class Login extends AppCompatActivity {
 
                             final ProgressDialog pd = new ProgressDialog(Login.this);
                             pd.setCanceledOnTouchOutside(false);
+                            if(str_email.equals("dealadmin@dealhub.com") && str_password.equals("pwdeals")){
+                                Intent intent = new Intent(Login.this, MainActivity3.class);
+                                startActivity(intent);
+                                finish();
+                            }else {
+                                auth.signInWithEmailAndPassword(str_email, str_password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            auth.signInWithEmailAndPassword(str_email, str_password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                                    if (task.isSuccessful()) {
-                                        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                            if (firebaseUser != null && firebaseUser.isEmailVerified()) {
+                                                redirectToHome();
+                                            } else {
+                                                Toast.makeText(Login.this, "Please verify your Email.", Toast.LENGTH_SHORT).show();
+                                            }
 
-                                        if (firebaseUser != null && firebaseUser.isEmailVerified()) {
-                                            redirectToHome();
                                         } else {
-                                            Toast.makeText(Login.this, "Please verify your Email.", Toast.LENGTH_SHORT).show();
+                                            pd.dismiss();
+                                            Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                                         }
-
-                                    } else {
-                                        pd.dismiss();
-                                        Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
 
                     }

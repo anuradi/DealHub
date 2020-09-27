@@ -39,13 +39,14 @@ public class SampleDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         final String offer = bundle.getString("offer");
+        final String notification = bundle.getString("notification");
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             getDialog().setCanceledOnTouchOutside(false);
         }
 
         txt=view.findViewById(R.id.txtDialogMessage);
-        if (offer.equals("")) {
+        if (offer.equals("")&& notification.equals("")) {
 
             txt.setText("Are you sure want to log out");
             Button btnOk = view.findViewById(R.id.btnOk);
@@ -71,15 +72,33 @@ public class SampleDialog extends DialogFragment {
                     }
                 }
             });
-        } else {
+        }else if(!(notification.equals(""))) {
+            txt.setText("Are you sure want to delete this notification");
+            final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Shop Notitfications");
+            Button btnOk = view.findViewById(R.id.btnOk);
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getDialog() != null) {
+                        reference.child(notification).setValue(null);
+                        getDialog().dismiss();
+                    }
+                }
+            });
+
+            Button btnCancel = view.findViewById(R.id.btnCancel);
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getDialog() != null) {
+                        getDialog().dismiss();
+                    }
+                }
+            });
+        }else {
             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             databaseReferencecmnt = FirebaseDatabase.getInstance().getReference("Comments").child(offer);
             databaseReferenceoffer = FirebaseDatabase.getInstance().getReference("Offers").child(firebaseUser.getUid()).child(offer);
-
-            if (getDialog() != null && getDialog().getWindow() != null) {
-                getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                getDialog().setCanceledOnTouchOutside(false);
-            }
 
             Button btnOk = view.findViewById(R.id.btnOk);
             btnOk.setOnClickListener(new View.OnClickListener() {

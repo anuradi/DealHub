@@ -68,7 +68,7 @@
             android:src="@drawable/notifications_color" />
 
         <TextView
-            android:id="@+id/shop_address"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:paddingEnd="8dp"
             android:layout_height="50dp"
