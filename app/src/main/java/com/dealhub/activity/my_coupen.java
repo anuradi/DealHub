@@ -50,9 +50,11 @@ public class my_coupen extends AppCompatActivity {
                 coupens.clear();
                 for (DataSnapshot snap1 : dataSnapshot.getChildren()) {
                     for (DataSnapshot snap2 : snap1.getChildren()) {
-                        MyCoupens myc = snap2.getValue(MyCoupens.class);
-                        myc.setShopname(snap1.getKey());
-                        coupens.add(myc);
+                        for (DataSnapshot snap3:snap2.getChildren()){
+                            MyCoupens myc = snap3.getValue(MyCoupens.class);
+                            myc.setShopname(snap1.getKey());
+                            coupens.add(myc);
+                        }
                     }
                 }
                 adapter.loadCoupens(coupens);
