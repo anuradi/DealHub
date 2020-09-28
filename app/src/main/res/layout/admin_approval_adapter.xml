@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_margin="8dp"
+    android:background="@drawable/post_boader"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/shop_image"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingStart="8dp"
+            android:editable="false"
+            android:drawableEnd="@drawable/view"
+            android:paddingEnd="8dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="View Shop Photo"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/shop_owner_id_photo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingStart="8dp"
+            android:editable="false"
+            android:drawableEnd="@drawable/view"
+            android:paddingEnd="8dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="View Shop Owner id Photo"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/br_photo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingStart="8dp"
+            android:editable="false"
+            android:drawableEnd="@drawable/view"
+            android:paddingEnd="8dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="View Business Registration Photo"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/shop_logo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingStart="8dp"
+            android:editable="false"
+            android:drawableEnd="@drawable/view"
+            android:paddingEnd="8dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="View Shop Logo"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/shop_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="@string/shop_name"
+            android:paddingStart="8dp"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/shop_address"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="@string/shop_address"
+            android:paddingStart="8dp"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/br_no"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="@string/business_registration_no"
+            android:paddingStart="8dp"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="@string/email"
+            android:paddingStart="8dp"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/contact_no"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="@string/contact_no"
+            android:paddingStart="8dp"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/shop_owner_id"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/button_boader_dark"
+            android:hint="@string/shop_owner_id_no"
+            android:paddingStart="8dp"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Approve"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Approve"
+                android:textStyle="bold"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/button_background_blue"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Delete"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Delete"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/button_background_red"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

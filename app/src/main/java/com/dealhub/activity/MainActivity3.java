@@ -20,6 +20,7 @@ import com.dealhub.fragment.MyShops_ShopOwner;
 import com.dealhub.fragment.NotificationList;
 import com.dealhub.fragment.Notifications_ShopOwner;
 import com.dealhub.fragment.Profile_ShopOwner;
+import com.dealhub.fragment.admin_approval;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity3 extends AppCompatActivity {
@@ -47,6 +48,9 @@ public class MainActivity3 extends AppCompatActivity {
 
                 case R.id.nav_notifications:
                     selectedFragment = new NotificationList();
+                    break;
+                case R.id.nav_admin:
+                    selectedFragment = new admin_approval();
                     break;
             }
             if (selectedFragment != null) {
