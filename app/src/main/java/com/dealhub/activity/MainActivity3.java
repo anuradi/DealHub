@@ -33,7 +33,7 @@ public class MainActivity3 extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        selectedFragment = new AddNotification();
+        selectedFragment = new admin_approval();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
 
@@ -46,7 +46,7 @@ public class MainActivity3 extends AppCompatActivity {
                     selectedFragment = new AddNotification();
                     break;
 
-                case R.id.nav_notifications:
+                case R.id.not:
                     selectedFragment = new NotificationList();
                     break;
                 case R.id.nav_admin:
