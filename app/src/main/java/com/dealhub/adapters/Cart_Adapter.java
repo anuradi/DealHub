@@ -116,6 +116,7 @@ public class Cart_Adapter extends RecyclerView.Adapter<Cart_Adapter.ViewHolder> 
                 bundle.putString("shopname", "" + ofr.getShopname());
                 bundle.putString("login", "" + "customer");
                 bundle.putString("count", "" +holder.count.getText().toString());
+                bundle.putString("price", "" +ofr.getOfferprice().split("Rs ")[1].split("/=")[0]);
                 CoupenDialog cmntDialog = new CoupenDialog();
                 cmntDialog.setArguments(bundle);
                 cmntDialog.show(fragmentManager, "comment_dialog");

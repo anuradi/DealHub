@@ -5,15 +5,17 @@ public class MyCoupens {
     String count;
     String crrdate;
     String phone;
+    double price;
 
     public MyCoupens() {
     }
 
-    public MyCoupens(String shopname, String count, String crrdate, String phone) {
+    public MyCoupens(String shopname, String count, String crrdate, String phone, double price) {
         this.shopname = shopname;
         this.count = count;
         this.crrdate = crrdate;
         this.phone = phone;
+        this.price = price;
     }
 
     public String getShopname() {
@@ -46,5 +48,13 @@ public class MyCoupens {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

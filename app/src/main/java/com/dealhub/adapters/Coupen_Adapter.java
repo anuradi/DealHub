@@ -60,6 +60,7 @@ public class Coupen_Adapter extends RecyclerView.Adapter<Coupen_Adapter.ViewHold
         holder.shpname.setText(myCoupens.getShopname());
         holder.count.setText(myCoupens.getCount());
         holder.mobile.setText(myCoupens.getPhone());
+        holder.price.setText("Rs."+myCoupens.getPrice());
     }
 
     @Override
@@ -69,7 +70,7 @@ public class Coupen_Adapter extends RecyclerView.Adapter<Coupen_Adapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        AppCompatTextView date,time,shpname,count,mobile;
+        AppCompatTextView date,time,shpname,count,mobile,price;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,6 +79,7 @@ public class Coupen_Adapter extends RecyclerView.Adapter<Coupen_Adapter.ViewHold
             shpname=itemView.findViewById(R.id.coup_shopname);
             count=itemView.findViewById(R.id.coupen_count);
             mobile=itemView.findViewById(R.id.coup_mobile);
+            price=itemView.findViewById(R.id.total_price);
         }
     }
 }

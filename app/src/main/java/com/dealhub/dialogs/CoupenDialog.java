@@ -62,6 +62,8 @@ public class CoupenDialog extends DialogFragment {
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
     String phonenum;
     String count;
+    String price;
+    double totalprice;
     AlertDialog alertDialog;
 
 //    @Nullable
@@ -115,6 +117,8 @@ public class CoupenDialog extends DialogFragment {
         final String shopname = bundle.getString("shopname");
         final String login = bundle.getString("login");
         count = bundle.getString("count");
+        price = bundle.getString("price");
+        totalprice=Double.parseDouble(price)*Double.parseDouble(count);
         alert.setView(view);
 
         alertDialog = alert.create();
@@ -226,6 +230,7 @@ public class CoupenDialog extends DialogFragment {
                 hashMap.put("crrdate", crrdate);
                 hashMap.put("phone", phonenum);
                 hashMap.put("count", count);
+                hashMap.put("price", totalprice);
                 databaseReference.push().setValue(hashMap);
                 Toast.makeText(getActivity(), "Coupen code sent", Toast.LENGTH_SHORT).show();
                 if (getDialog() != null) {
